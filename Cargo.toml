@@ -1,0 +1,23 @@
+[package]
+name = "kovi-plugin-image-splitter"
+version = "0.1.0"
+edition = "2024"
+license = "MIT OR Apache-2.0"
+authors = ["Nawyjx <3373167460@qq.com>"]
+description = "Kovi 的图片九宫格/网格裁剪插件，支持自定义行列分割与合并转发。"
+categories = ["multimedia::images", "web-programming"]
+repository = "https://github.com/araea/kovi-plugin-image-splitter"
+keywords = ["kovi", "kovi-plugin", "image", "splitter", "crop"]
+
+[dependencies]
+kovi = ">= 0.12"
+image = "0.24"
+base64 = "0.22"
+regex = "1"
+bytes = "1"
+anyhow = "1.0"
+kovi-plugin-expand-napcat = "0.4"
+reqwest = { version = "0.12", features = ["json"] }
+
+[package.metadata.docs.rs]
+targets = ["x86_64-unknown-linux-gnu"]
