@@ -1,6 +1,6 @@
 [package]
 name = "kovi-plugin-image-splitter"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 license = "MIT OR Apache-2.0"
 authors = ["Nawyjx <3373167460@qq.com>"]
@@ -11,7 +11,7 @@ keywords = ["kovi", "kovi-plugin", "image", "splitter", "crop"]
 
 [dependencies]
 kovi = ">= 0.12"
-image = "0.24"
+image = "0.25"
 base64 = "0.22"
 regex = "1"
 bytes = "1"
