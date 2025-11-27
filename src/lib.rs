@@ -176,7 +176,7 @@ async fn main() {
                 };
 
                 event.reply(format!(
-                    "🔪 收到～正在将图片切成 {}×{} 份，马上就好~",
+                    "🔪 收到～正在将图片切成 {} 行 × {} 列，马上就好~",
                     rows, cols
                 ));
 
@@ -199,39 +199,26 @@ async fn main() {
                     Ok(Ok(base64_list)) => {
                         // 5. 构建合并转发消息
                         let mut nodes = Vec::new();
-                        let bot_info_res = bot.get_login_info().await;
-                        let bot_info = match bot_info_res {
-                            Ok(info) => info,
-                            Err(_) => {
-                                event.reply("❌ 获取机器人信息失败");
-                                return;
-                            }
-                        };
-                        let bot_id = bot_info
-                            .data
-                            .get("user_id")
-                            .and_then(|u| u.as_str())
-                            .unwrap_or("0");
-                        let bot_name = bot_info
-                            .data
-                            .get("nickname")
-                            .and_then(|n| n.as_str())
-                            .unwrap_or("Bot");
 
-                        for b64 in base64_list {
+                        // 步骤 A: 获取 Bot 自身的登录信息
+                        let bot_id = match bot.get_login_info().await {
+                            Ok(info) => info.data["user_id"].to_string(),
+                            Err(_) => "10000".to_string(), // 获取失败时的兜底 ID
+                        };
+
+                        // 步骤 B: 遍历切片，带索引构建节点
+                        for (index, b64) in base64_list.into_iter().enumerate() {
+                            // 构造单条图片消息
+                            let image_content =
+                                kovi::Message::new().add_image(&format!("base64://{}", b64));
+
+                            // 构造自定义节点
                             let node = Segment::new(
                                 "node",
                                 json!({
-                                    "name": bot_name,
-                                    "uin": bot_id,
-                                    "content": [
-                                        {
-                                            "type": "image",
-                                            "data": {
-                                                "file": format!("base64://{}", b64)
-                                            }
-                                        }
-                                    ]
+                                    "user_id": bot_id,
+                                    "nickname": format!("图 {}", index + 1),
+                                    "content": image_content
                                 }),
                             );
                             nodes.push(node);
